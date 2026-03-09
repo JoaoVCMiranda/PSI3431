@@ -11,5 +11,5 @@ gfortran fft.f90 -lfftw3 -o fft_audio
 Para plotar
 
 ```sh
-./fft_audio > results.dat && gnuplot -p -e "plot 'results.dat' with lines"
+./fft_audio && gnuplot -p -e "plot 'results.dat' with lines"
 ```

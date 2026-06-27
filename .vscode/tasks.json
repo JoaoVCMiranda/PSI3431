@@ -1,0 +1,106 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        // ── RUN ───────────────────────────────────────────────────────────────
+        {
+            "label": "Octave: run file",
+            "type": "shell",
+            "command": "octave --no-gui --norc '${file}'",
+            "group": { "kind": "build", "isDefault": true },
+            "presentation": { "reveal": "always", "panel": "dedicated", "focus": true },
+            "problemMatcher": {
+                "owner": "octave",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*\\.m):(\\d+):\\d*:?\\s*(error|warning):\\s*(.*)$",
+                    "file": 1, "line": 2, "severity": 3, "message": 4
+                }
+            }
+        },
+        {
+            "label": "Octave: run main.m",
+            "type": "shell",
+            "command": "octave --no-gui --norc main.m",
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "build",
+            "presentation": { "reveal": "always", "panel": "dedicated", "focus": true },
+            "problemMatcher": {
+                "owner": "octave",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*\\.m):(\\d+):\\d*:?\\s*(error|warning):\\s*(.*)$",
+                    "file": 1, "line": 2, "severity": 3, "message": 4
+                }
+            }
+        },
+        {
+            "label": "Octave: run lab...",
+            "type": "shell",
+            "command": "octave --no-gui --norc 'entregas/${input:labDir}/${input:script}.m'",
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "build",
+            "presentation": { "reveal": "always", "panel": "dedicated", "focus": true },
+            "problemMatcher": {
+                "owner": "octave",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*\\.m):(\\d+):\\d*:?\\s*(error|warning):\\s*(.*)$",
+                    "file": 1, "line": 2, "severity": 3, "message": 4
+                }
+            }
+        },
+
+        // ── PLOT (salva PNG sem display) ───────────────────────────────────────
+        {
+            "label": "Octave: run + save figs",
+            "type": "shell",
+            "command": "octave --no-gui --norc '${file}'",
+            "options": {
+                "env": { "OCTAVE_PRINT_FIG": "1" }
+            },
+            "group": "test",
+            "presentation": { "reveal": "always", "panel": "shared" },
+            "problemMatcher": []
+        },
+
+        // ── ÁUDIO ─────────────────────────────────────────────────────────────
+        {
+            "label": "Play: Eddies_Twister.wav",
+            "type": "shell",
+            "command": "aplay media/Eddies_Twister.wav",
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "test",
+            "presentation": { "reveal": "silent", "panel": "shared" },
+            "problemMatcher": []
+        },
+        {
+            "label": "Info: wav file",
+            "type": "shell",
+            "command": "octave --no-gui --norc --eval \"[~,Fs]=audioread('${input:wavFile}'); info=audioinfo('${input:wavFile}'); fprintf('Fs=%d Hz  samples=%d  dur=%.2fs  ch=%d\\n',info.SampleRate,info.TotalSamples,info.Duration,info.NumChannels);\"",
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "test",
+            "presentation": { "reveal": "always", "panel": "shared" },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "labDir",
+            "type": "promptString",
+            "description": "Subpasta da entrega (ex: lab_3)",
+            "default": "lab_3"
+        },
+        {
+            "id": "script",
+            "type": "promptString",
+            "description": "Nome do script .m (sem extensão)",
+            "default": "main"
+        },
+        {
+            "id": "wavFile",
+            "type": "promptString",
+            "description": "Caminho para o arquivo .wav",
+            "default": "media/Eddies_Twister.wav"
+        }
+    ]
+}
